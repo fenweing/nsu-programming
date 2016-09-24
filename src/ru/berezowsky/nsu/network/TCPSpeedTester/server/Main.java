@@ -20,7 +20,7 @@ public class Main {
 
             Debugger.log("Waiting connection on port " + port);
             Socket socket = serverSocket.accept();
-            Debugger.log("Connected... waiting bytes");
+            Debugger.log("Connected. Waiting bytes");
 
             DataInputStream is = new DataInputStream(socket.getInputStream());
 
@@ -32,7 +32,7 @@ public class Main {
 
                 int available = is.available();
                 if (available == 0) {
-                    throw new IOException("disconnected");
+                    throw new IOException("Disconnected");
                 }
 
                 byte[] buf = new byte[available];
