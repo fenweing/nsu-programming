@@ -10,6 +10,7 @@ class Acceptor extends Thread {
     private final ServerSocket serverSocket;
 
     Acceptor(int port) throws IOException {
+        super("Acceptor thread");
         serverSocket = new ServerSocket(port);
     }
 

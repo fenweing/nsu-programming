@@ -10,7 +10,7 @@ public class Timer {
                 Thread.sleep(delay * 1000);
                 finalAction.run();
             } catch (InterruptedException ignored) {}
-        });
+        }, "Timer with final action thread");
         timerThread.start();
     }
 
@@ -30,20 +30,11 @@ public class Timer {
                         periodicAction.run();
                 }
             } catch (InterruptedException ignored) {}
-        });
+        }, "Timer with periodic action thread");
         timerThread.start();
     }
 
     public void interrupt(){
         timerThread.interrupt();
-    }
-
-    private void scheduleInterruptTimer(int delay){
-        new Thread(() -> {
-            try {
-                Thread.sleep(delay * 1000);
-                timerThread.interrupt();
-            } catch (InterruptedException ignored) {}
-        });
     }
 }
