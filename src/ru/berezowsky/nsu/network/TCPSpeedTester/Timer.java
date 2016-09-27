@@ -1,23 +1,28 @@
 package ru.berezowsky.nsu.network.TCPSpeedTester;
 
-public class Timer extends Thread {
+public class Timer {
 
-    private Runnable handler;
-    private int seconds;
-
-    public void schedule(Runnable handler, int seconds) {
-        this.handler = handler;
-        this.seconds = seconds;
-        start();
+    public static void scheduleFinalAction(Runnable finalAction, int delay) {
+        new Thread(() -> {
+            try {
+                Thread.sleep(delay * 1000);
+                finalAction.run();
+                Debugger.log("Timer: final action invoked");
+            } catch (InterruptedException ignored) {}
+        }).start();
     }
 
-    @Override
-    public void run(){
-        try {
-            sleep(seconds * 1000);
-            Debugger.log("Timer: executing command");
-            handler.run();
-        } catch (InterruptedException ignored) {}
+    public static void schedulePeriodicAction(Runnable periodicAction, int period, int duration) {
+        new Thread(() -> {
+            while (!Thread.currentThread().isInterrupted()){
+                try {
+                    scheduleFinalAction(() -> Thread.currentThread().interrupt(), duration);
 
+                    Thread.sleep(period * 1000);
+
+                    periodicAction.run();
+                } catch (InterruptedException ignored) {}
+            }
+        }).start();
     }
 }

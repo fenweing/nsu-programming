@@ -8,7 +8,7 @@ public class Main {
     public static void main(String[] args) {
         int port = 4444;
         String host = "localhost";
-        int testSeconds = 15;
+        int testSeconds = 5;
 
         try {
             Sender sender = new Sender(host, port);

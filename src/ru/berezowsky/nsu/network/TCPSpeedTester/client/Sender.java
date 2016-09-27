@@ -7,23 +7,26 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.net.Socket;
 
-public class Sender extends Thread {
+class Sender extends Thread {
     private Socket socket;
-    private int seconds;
 
-    public Sender(String host, int port) throws IOException {
+    Sender(String host, int port) throws IOException {
         socket = new Socket(host, port);
     }
 
-    public void testSpeed(int seconds) throws IOException {
-        this.seconds = seconds;
-        new Timer().schedule(this::interrupt, seconds);
+    void testSpeed(int seconds) throws IOException {
+        Timer.scheduleFinalAction(() -> {
+            try {
+                this.interrupt();
+                socket.close();
+            } catch (IOException ignored) {}
+        }, seconds);
         start();
     }
 
     @Override
     public void run(){
-        final int bufsize = 1024*1024;
+        final int bufsize = 1024*1024*100;
         long kbytes = 0;
         try {
             OutputStream os = socket.getOutputStream();
@@ -35,10 +38,8 @@ public class Sender extends Thread {
                 os.flush();
                 kbytes += bufsize / 1024;
             }
-        } catch (IOException e) {
-            Debugger.log("Something went wrong: " + e.getLocalizedMessage());
-        }
+        } catch (IOException ignored) {}
 
-        Debugger.log("Sent " + kbytes + "Kb " + "in " + seconds + "s. Speed: " + kbytes/seconds + "Kb/s");
+//        Debugger.log("Sent " + kbytes + "Kb " + "in " + seconds + "s. Speed: " + kbytes/seconds + "Kb/s");
     }
 }
