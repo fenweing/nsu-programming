@@ -7,7 +7,6 @@ public class Timer {
             try {
                 Thread.sleep(delay * 1000);
                 finalAction.run();
-                Debugger.log("Timer: final action invoked");
             } catch (InterruptedException ignored) {}
         }).start();
     }

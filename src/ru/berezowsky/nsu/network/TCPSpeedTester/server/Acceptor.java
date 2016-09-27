@@ -6,10 +6,10 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-public class Acceptor extends Thread {
+class Acceptor extends Thread {
     private final ServerSocket serverSocket;
 
-    public Acceptor(int port) throws IOException {
+    Acceptor(int port) throws IOException {
         serverSocket = new ServerSocket(port);
     }
 
@@ -17,9 +17,12 @@ public class Acceptor extends Thread {
     public void run() {
         try {
             Debugger.log("Waiting for connections");
+
             while (!isInterrupted()){
                 Socket socket = serverSocket.accept();
+
                 Debugger.log(socket.getInetAddress() + ":" + socket.getPort() + " connected");
+
                 new Receiver(socket).start();
             }
         } catch (IOException e) {
