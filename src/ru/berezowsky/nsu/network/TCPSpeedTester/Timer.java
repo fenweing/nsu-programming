@@ -1,6 +1,4 @@
-package ru.berezowsky.nsu.network.TCPSpeedTester.client;
-
-import ru.berezowsky.nsu.network.TCPSpeedTester.Debugger;
+package ru.berezowsky.nsu.network.TCPSpeedTester;
 
 public class Timer extends Thread {
 
