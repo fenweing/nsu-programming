@@ -15,7 +15,7 @@ class Sender extends Thread {
     }
 
     void testSpeed(int seconds) throws IOException {
-        Timer.scheduleFinalAction(() -> {
+        new Timer().scheduleFinalAction(() -> {
             try {
                 this.interrupt();
                 socket.close();
@@ -27,7 +27,7 @@ class Sender extends Thread {
     @Override
     public void run(){
         final int bufsize = 1024*1024*100;
-        long kbytes = 0;
+//        long kbytes = 0;
         try {
             OutputStream os = socket.getOutputStream();
 
@@ -36,7 +36,7 @@ class Sender extends Thread {
                 byte[] buf = new byte[bufsize];
                 os.write(buf);
                 os.flush();
-                kbytes += bufsize / 1024;
+//                kbytes += bufsize / 1024;
             }
         } catch (IOException ignored) {}
 
