@@ -28,7 +28,7 @@ class Sender extends Thread {
 
     @Override
     public void run(){
-        final int bufsize = 1024*1024*100;
+        final int bufsize = 1024*1024;
         long kbytes = 0;
         try {
             OutputStream os = socket.getOutputStream();
