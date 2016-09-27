@@ -9,12 +9,14 @@ import java.net.Socket;
 
 class Sender extends Thread {
     private Socket socket;
+    private int seconds;
 
     Sender(String host, int port) throws IOException {
         socket = new Socket(host, port);
     }
 
     void testSpeed(int seconds) throws IOException {
+        this.seconds = seconds;
         new Timer().scheduleFinalAction(() -> {
             try {
                 this.interrupt();
@@ -27,7 +29,7 @@ class Sender extends Thread {
     @Override
     public void run(){
         final int bufsize = 1024*1024*100;
-//        long kbytes = 0;
+        long kbytes = 0;
         try {
             OutputStream os = socket.getOutputStream();
 
@@ -36,10 +38,10 @@ class Sender extends Thread {
                 byte[] buf = new byte[bufsize];
                 os.write(buf);
                 os.flush();
-//                kbytes += bufsize / 1024;
+                kbytes += bufsize / 1024;
             }
         } catch (IOException ignored) {}
 
-//        Debugger.log("Sent " + kbytes + "Kb " + "in " + seconds + "s. Speed: " + kbytes/seconds + "Kb/s");
+        Debugger.log("Sent " + kbytes + " Kb " + "in " + seconds + "s. Speed: " + kbytes/seconds + " Kb/s");
     }
 }
