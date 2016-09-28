@@ -1,13 +1,13 @@
 package ru.berezowsky.nsu.network.TCPSpeedTester.client;
 
-import ru.berezowsky.nsu.network.TCPSpeedTester.Debugger;
+import ru.berezowsky.nsu.network.Debugger;
 
 import java.io.IOException;
 
 public class Main {
     public static void main(String[] args) {
         int port = 4444;
-        String host = "localhost";
+        String host = "192.168.0.101";
         int testSeconds = 20;
 
         try {

@@ -1,4 +1,4 @@
-package ru.berezowsky.nsu.network.TCPSpeedTester;
+package ru.berezowsky.nsu.network;
 
 public class Debugger {
     private static boolean enabled = true;

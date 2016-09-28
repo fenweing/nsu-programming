@@ -1,6 +1,6 @@
 package ru.berezowsky.nsu.network.TCPSpeedTester.server;
 
-import ru.berezowsky.nsu.network.TCPSpeedTester.Debugger;
+import ru.berezowsky.nsu.network.Debugger;
 
 import java.io.IOException;
 import java.net.ServerSocket;

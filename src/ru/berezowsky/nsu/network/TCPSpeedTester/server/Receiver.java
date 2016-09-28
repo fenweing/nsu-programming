@@ -1,7 +1,7 @@
 package ru.berezowsky.nsu.network.TCPSpeedTester.server;
 
-import ru.berezowsky.nsu.network.TCPSpeedTester.Debugger;
-import ru.berezowsky.nsu.network.TCPSpeedTester.Timer;
+import ru.berezowsky.nsu.network.Debugger;
+import ru.berezowsky.nsu.network.Timer;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;

@@ -1,7 +1,7 @@
 package ru.berezowsky.nsu.network.TCPSpeedTester.client;
 
-import ru.berezowsky.nsu.network.TCPSpeedTester.Debugger;
-import ru.berezowsky.nsu.network.TCPSpeedTester.Timer;
+import ru.berezowsky.nsu.network.Debugger;
+import ru.berezowsky.nsu.network.Timer;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -28,7 +28,7 @@ class Sender extends Thread {
 
     @Override
     public void run(){
-        final int bufsize = 1024*1024*100;
+        final int bufsize = 1024*1024;
         long kbytes = 0;
         try {
             OutputStream os = socket.getOutputStream();
