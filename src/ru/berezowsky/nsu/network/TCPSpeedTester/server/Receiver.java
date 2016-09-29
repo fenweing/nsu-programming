@@ -27,7 +27,7 @@ class Receiver extends Thread{
         Timer timer = new Timer();
         timer.schedulePeriodicAction(() -> {
             secondsPassed += 1;
-            Debugger.log(info + " :current speed: " + currentBytes.getAndSet(0)/1024 + " Kb/s, Avg: " + totalBytes.get()/(secondsPassed * 1024) + " Kb/s");
+            Debugger.log(info + ": current speed: " + currentBytes.getAndSet(0)/1024 + " Kb/s, Avg: " + totalBytes.get()/(secondsPassed * 1024) + " Kb/s");
         }, 1);
 
         try {
