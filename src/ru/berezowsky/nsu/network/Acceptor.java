@@ -8,7 +8,7 @@ public class Acceptor extends Thread {
     private final ServerSocket serverSocket;
     private final SocketHandler handler;
 
-    Acceptor(int port, SocketHandler handler) throws IOException {
+    public Acceptor(int port, SocketHandler handler) throws IOException {
         super("Acceptor thread");
         serverSocket = new ServerSocket(port);
         this.handler = handler;
