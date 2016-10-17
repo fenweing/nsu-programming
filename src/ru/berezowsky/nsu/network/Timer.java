@@ -41,4 +41,10 @@ public class Timer {
         timerThread.interrupt();
         timerThread = null;
     }
+
+    public boolean isAlive(){
+        if (timerThread == null) return false;
+
+        return timerThread.isAlive();
+    }
 }

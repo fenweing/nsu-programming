@@ -1,17 +1,17 @@
-package ru.berezowsky.nsu.network.TCPSpeedTester.server;
-
-import ru.berezowsky.nsu.network.Debugger;
+package ru.berezowsky.nsu.network;
 
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-class Acceptor extends Thread {
+public class Acceptor extends Thread {
     private final ServerSocket serverSocket;
+    private final SocketHandler handler;
 
-    Acceptor(int port) throws IOException {
+    public Acceptor(int port, SocketHandler handler) throws IOException {
         super("Acceptor thread");
         serverSocket = new ServerSocket(port);
+        this.handler = handler;
     }
 
     @Override
@@ -24,7 +24,7 @@ class Acceptor extends Thread {
 
                 Debugger.log(socket.getInetAddress() + ":" + socket.getPort() + " connected");
 
-                new Receiver(socket).start();
+                handler.handle(socket);
             }
         } catch (IOException e) {
             e.printStackTrace();

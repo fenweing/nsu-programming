@@ -6,14 +6,15 @@ import java.io.IOException;
 
 public class Client {
     public static void main(String[] args) {
-        int port = 4444;
-        String host = "192.168.0.101";
-        int testSeconds = 20;
-
         try {
+            int port = Integer.parseInt(args[1]);
+            String host = args[0];
+            int testSeconds = 20;
+
+
             Sender sender = new Sender(host, port);
             sender.testSpeed(testSeconds);
-        } catch (IOException e) {
+        } catch (Exception e) {
             Debugger.log("Something went wrong: " + e.getLocalizedMessage());
         }
     }
