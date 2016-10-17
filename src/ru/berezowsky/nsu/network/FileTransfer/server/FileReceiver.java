@@ -4,6 +4,7 @@ import ru.berezowsky.nsu.network.Debugger;
 import ru.berezowsky.nsu.network.SocketHandler;
 
 import java.io.DataInputStream;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.Socket;
@@ -47,6 +48,8 @@ public class FileReceiver implements SocketHandler {
                 fileOutputStream = new DigestOutputStream(new FileOutputStream(fileName), MessageDigest.getInstance("MD5"));
 
                 long fileSizeLeft = socketInputStream.readLong();
+
+                Debugger.log(fileName + ": receiving");
                 while (fileSizeLeft > 0) {
                     byte[] buf;
                     if (fileSizeLeft > 1024) {
@@ -65,13 +68,19 @@ public class FileReceiver implements SocketHandler {
                     fileSizeLeft -= bytesRead;
                 }
 
+                Debugger.log(fileName + ": received");
+
                 byte[] md5BytesRead = new byte[16];
                 socketInputStream.readFully(md5BytesRead);
 
                 byte[] md5BytesCalculated = fileOutputStream.getMessageDigest().digest();
 
-                if (!Arrays.equals(md5BytesRead, md5BytesCalculated)){
-                    throw new IOException("md5 check failed");
+                if (Arrays.equals(md5BytesRead, md5BytesCalculated)){
+                    Debugger.log(fileName + ": md5 check OK");
+                } else {
+                    fileOutputStream.close();
+                    new File(fileName).delete();
+                    throw new IOException(fileName + ": md5 check FAILED. Deleted");
                 }
 
             } catch (IOException | NoSuchAlgorithmException e) {
