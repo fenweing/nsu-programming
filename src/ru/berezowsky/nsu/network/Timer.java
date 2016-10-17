@@ -10,6 +10,9 @@ public class Timer {
                 Thread.sleep(delay * 1000);
                 finalAction.run();
             } catch (InterruptedException ignored) {}
+            finally {
+                timerThread = null;
+            }
         }, "Timer with final action thread");
         timerThread.start();
     }
@@ -36,5 +39,6 @@ public class Timer {
 
     public void interrupt(){
         timerThread.interrupt();
+        timerThread = null;
     }
 }
