@@ -1,26 +1,39 @@
 package ru.berezowsky.nsu.network.UDPBroadcast;
 
 import ru.berezowsky.nsu.network.Debugger;
+import ru.berezowsky.nsu.network.Timer;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
+import java.util.Scanner;
+import java.util.concurrent.SynchronousQueue;
 
 public class UDPBroadcast {
     public static void main(String[] args) {
-        int port = 5555;
-        String packet = "packet";
-        byte[] buf = new byte[10];
-        DatagramPacket recvPacket = new DatagramPacket(buf, buf.length);
+        try {
+            int port;
 
-        try (UDPSocket socket = new UDPSocket(port)) {
-            socket.sendBroadcast(packet);
-            socket.receive(recvPacket);
-            Debugger.log(recvPacket.getData());
+            if (args.length != 1){
+                System.out.print("port: ");
+                port = new Scanner(System.in).nextInt();
+            } else {
+                port = Integer.parseInt(args[0]);
+            }
+
+            UDPSocket socket = new UDPSocket(port);
+
+            Sender sender;
+            Receiver receiver;
 
 
+            receiver = new Receiver(socket);
+            sender = new Sender(socket);
 
-        } catch (IOException e) {
-            e.printStackTrace();
+            sender.start();
+            receiver.start();
+
+        } catch (Exception e) {
+            Debugger.log("Something went wrong: " + e.getLocalizedMessage());
         }
     }
 }
