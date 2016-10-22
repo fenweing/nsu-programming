@@ -5,9 +5,7 @@ import ru.berezowsky.nsu.network.Timer;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
-import java.net.InetAddress;
 import java.net.SocketAddress;
-import java.util.HashMap;
 import java.util.concurrent.ConcurrentHashMap;
 
 class Receiver extends Thread {
@@ -28,9 +26,8 @@ class Receiver extends Thread {
     public void run() {
 
         machinesChecker.schedulePeriodicAction(()->{
-            Debugger.log("\n\nMachines online:");
+            Debugger.log("\n\nMachines online:" + machinesOnline.size());
             machinesOnline.forEach((adr, count) -> {
-                Debugger.log("Total online: " + machinesOnline.size());
                 count--;
                 if (count <= 0){
                     machinesOnline.remove(adr);
