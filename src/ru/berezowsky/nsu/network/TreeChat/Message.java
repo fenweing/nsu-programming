@@ -36,6 +36,9 @@ public class Message {
     public MessageType getType() {
         return type;
     }
+    public String getBody() {
+        return body;
+    }
 
 
     public static Message createOkMessage(Message message) {
@@ -51,7 +54,7 @@ public class Message {
     }
 
     public DatagramPacket generatePacket(Node to) throws UnknownHostException {
-        ByteBuffer buffer = ByteBuffer.allocate(Integer.MAX_VALUE);
+        ByteBuffer buffer = ByteBuffer.allocate(1024);
         buffer.putInt(type.getCode());
 
         buffer.putLong(uuid.getMostSignificantBits());
@@ -61,7 +64,7 @@ public class Message {
         buffer.putInt(bodyBytes.length);
         buffer.put(bodyBytes);
 
-        return new DatagramPacket(buffer.array(), buffer.arrayOffset(), to.getAddress(), to.getPort());
+        return new DatagramPacket(buffer.array(), buffer.position(), to.getAddress(), to.getPort());
     }
 
     public static Message createFromPacket(DatagramPacket packet) {

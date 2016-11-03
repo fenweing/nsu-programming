@@ -1,25 +1,18 @@
 package ru.berezowsky.nsu.network.TreeChat;
 
-import ru.berezowsky.nsu.network.UDPSocket;
-
-import java.net.SocketException;
-import java.net.UnknownHostException;
+import java.io.IOException;
 
 public class TreeChat {
     public static void main(String[] args) {
-        int port = 1234;
-        boolean head = true;
 
-        try {
-            UDPSocket socket = new UDPSocket(port);
-
-            while (true){
-
-            }
+        try{
+//            Client client = new Client(4000);
+            Client client = new Client(4001, "localhost", 4000);
 
 
 
-        } catch (UnknownHostException | SocketException e) {
+
+        } catch ( InterruptedException | IOException e) {
             e.printStackTrace();
         }
 

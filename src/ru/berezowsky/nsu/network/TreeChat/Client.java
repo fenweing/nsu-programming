@@ -1,10 +1,12 @@
 package ru.berezowsky.nsu.network.TreeChat;
 
+import ru.berezowsky.nsu.network.Debugger;
 import ru.berezowsky.nsu.network.UDPSocket;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 import static ru.berezowsky.nsu.network.TreeChat.MessageType.OK;
 
@@ -21,9 +23,13 @@ public class Client {
         if (parentHost != null){
             parent = new Node(parentHost, parentPort);
             connect();
-            //start periodic action to resend
-            receive();
+        } else {
+            connected = true;
         }
+
+        //start periodic action to resend
+        new Sender().start();
+        receive();
 
     }
 
@@ -31,9 +37,9 @@ public class Client {
         this(port, null, 0);
     }
 
-    public void receive() throws IOException, InterruptedException {
+    private void receive() throws IOException, InterruptedException {
         while (connected){
-            byte[] buf = new byte[Integer.MAX_VALUE];
+            byte[] buf = new byte[1024];
             DatagramPacket packet = new DatagramPacket(buf, buf.length);
             socket.receive(packet);
 
@@ -49,10 +55,11 @@ public class Client {
                     break;
 
                 case DISCONNECT:
-                    //recieveDisconnect(message);
+                    //receiveDisconnect(message);
                     break;
 
                 case MESSAGE:
+                    Debugger.log(message.getUuid() + ": " + message.getBody());
                     replyOk(message);
                     sendAll(message, message.from());
                     break;
@@ -78,6 +85,10 @@ public class Client {
         }
     }
 
+    private void sendAll(Message message) throws IOException, InterruptedException {
+        sendAll(message, null);
+    }
+
     private void replyOk(Message message) throws IOException, InterruptedException {
         Message answer = Message.createOkMessage(message);
         send(message.from(), answer);
@@ -94,12 +105,13 @@ public class Client {
                 Message connectMsg = Message.createConnectMessage();
                 send(parent, connectMsg);
 
-                byte[] buf = new byte[Integer.MAX_VALUE];
+                byte[] buf = new byte[1024];
                 DatagramPacket packet = new DatagramPacket(buf, buf.length);
                 socket.receive(packet);
                 Message reply = Message.createFromPacket(packet);
                 if (reply.getType() == OK){
                     connected = true;
+                    nodes.add(parent);
                 }
             }
 
@@ -107,5 +119,23 @@ public class Client {
             //throw //TODO: throw error "parent is null"
         }
 
+    }
+
+    class Sender extends Thread{
+        @Override
+        public void run() {
+            try {
+                Scanner scanner = new Scanner(System.in);
+                while (true) {
+                    String body = scanner.next();
+
+                    Message msg = Message.createTextMessage(body);
+
+                    sendAll(msg);
+                }
+            } catch (InterruptedException | IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }
