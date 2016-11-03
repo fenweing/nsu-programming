@@ -2,6 +2,7 @@ package ru.berezowsky.nsu.network.FileTransfer.server;
 
 
 import ru.berezowsky.nsu.network.Acceptor;
+import ru.berezowsky.nsu.network.Debugger;
 import ru.berezowsky.nsu.network.SocketHandler;
 
 import java.io.IOException;
@@ -11,14 +12,14 @@ public class Server {
 
         try {
 
+            int port = Integer.parseInt(args[0]);
+
             SocketHandler receiver = new FileReceiver();
-            Acceptor acceptor = new Acceptor(4444, receiver);
+            Acceptor acceptor = new Acceptor(port, receiver);
             acceptor.start();
 
-
-
         } catch (IOException e) {
-            e.printStackTrace();
+            Debugger.log("something went wrong: " + e.getLocalizedMessage());
         }
     }
 }
